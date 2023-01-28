@@ -43,35 +43,49 @@ function App() {
     },
   ];
   const [question, setQuestion] = useState(0);
+  const [score, setScore] = useState(false);
+  const [scor, setScor] = useState(0);
 
-  const butClick = () => {
+  const butClick = (isRight) => {
+    if(isRight === true){
+      setScor(scor+1);
+    }
     const nextQ = question + 1;
     if(nextQ < questions.length){
       setQuestion(nextQ);
     } else {
-      alert("You have finished the quiz")
+      setScore(true);
+    }
+  }
+
+  const butClick2 = (choice) => {
+    if(choice === true){
+      setQuestion(0);
+      setScor(0);
+      setScore(false);
     }
   }
   return (
     <div className="app">
       {/* HINT: replace "false" with logic to display the 
     score when the user has answered all the questions */}
-      {false ? (
+      {score ? (
         <div className="score-section">
-          You scored 1 out of {questions.length}
+          You scored {scor} out of {questions.length}
+          <button onClick={() => butClick2(true)}>Reset</button>
         </div>
       ) : (
         <>
           <div className="question-section">
             <div className="question-count">
-              <span>Question 1</span>/{questions.length}
+              <span>{question+1}</span>/{questions.length}
             </div>
             <div className="question-text">
              {questions[question].questionTxt}
             </div>
           </div>
           <div className="answer-section">
-            {questions[question].ansOpt.map((ansOpt) => (<button onClick={butClick}>{ansOpt.ansOpt}</button>))}
+            {questions[question].ansOpt.map((ansOpt) => (<button onClick={() => butClick(ansOpt.isRight)}>{ansOpt.ansOpt}</button>))}
           </div>
         </>
       )}
